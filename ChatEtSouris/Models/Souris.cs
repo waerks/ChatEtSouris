@@ -7,23 +7,30 @@ using System.Threading.Tasks;
 
 namespace ChatEtSouris.Models
 {
+	// Delegate
+	public delegate void DeplacementHandler(int x, int y);
 	internal class Souris
 	{
-		public int PositionX;
-		public int PositionY;
-		private Random _random;
+		public int PositionX { get; set; }
+		public int PositionY { get; set; }
+
+		// Event
+		public event DeplacementHandler Deplacement;
 
 		public void Deplacer()
 		{
-			_random = new Random();
+			Random random = new Random();
 
-			int deplacementX = _random.Next(-1,2);
-			int deplacementY = _random.Next(-1,2);
+			// Donner aléatoirement un chiffre pour la position
+			int deplacementX = random.Next(-1,2);
+			int deplacementY = random.Next(-1,2);
 
+			// Déplacer de +1 à chaque déplacement
 			PositionX += deplacementX;
 			PositionY += deplacementY;
 
-            Console.WriteLine($"La souris se déplace en ({PositionX}, {PositionY})");
+			//Indique (émet) le fait de s'être déplacé
+			Deplacement?.Invoke(PositionX, PositionY);
 		}
 	}
 }
